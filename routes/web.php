@@ -15,12 +15,11 @@ use App\Http\Controllers\uploadpdfController;
 |
 */
 
-Route::get('/', function(){
-    return view('welcome');
-});
 
 
 Route::controller(UserController::class)->group(function() {
+    Route::get('/', 'login')->name('login');
+
     Route::get('/register', 'register')->name('register');
     Route::post('/store', 'store')->name('store');
     Route::get('/login', 'login')->name('login');
