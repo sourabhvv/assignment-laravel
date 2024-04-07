@@ -33,7 +33,7 @@ Route::controller(uploadpdfController::class)->group(function() {
   
 
     Route::post('/uploadpdf','uploadpdf')->name('uploadpdf');
-    Route::get('files/{filename}','getfile')->name('getfile');
+    Route::get('download/{id}','download')->name('download');
 });
 
 

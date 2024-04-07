@@ -1,7 +1,6 @@
 
 
 
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -79,12 +78,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($Files as $File)
+                                    @forelse($Files as $File)
                                     <tr>
                                         <td>{{$File->file_name}}</td>
-                                        <td><a href="{{ url('storage/app/'.$File->file_path) }}">Open</a></td>
+                                         <td>
+                                            <a href="{{url('download/'.$File->id)}}" class="btn btn-primary">dounload</a>
+                                        
+                                        </td>
                                     </tr>
-                                    @endforeach
+                                    @empty
+                                    <tr>
+                                        No PDF Found
+                                    </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -131,16 +137,17 @@
                 formData.append('pdf', file);
                 formData.append('_token', '{{ csrf_token() }}');
         
-                // Send AJAX request to the server
+               
                 $.ajax({
-                    url: "{{ url('/uploadpdf') }}", // Server endpoint to handle the upload
-                    type: "POST", // HTTP method
-                    data: formData, // Form data including the file
-                    contentType: false, // Prevent jQuery from automatically setting the Content-Type
-                    processData: false, // Prevent jQuery from processing data
-                    success: function(response){ // Function to handle success response
-                        // Reload the page after successful upload
-                        console.log("File uploaded successfully!");
+                    url: "{{ url('/uploadpdf') }}", 
+                    type: "POST", 
+                    data: formData, 
+                    contentType: false, 
+                    processData: false, 
+                    success: function(response){ 
+
+                        alert(response.message); // Show success message
+                        window.location.reload();
                     },
                     error: function(xhr, status, error){ // Function to handle error response
                         console.error(xhr.responseText); // Log error message to console
@@ -149,5 +156,7 @@
             }
         });
         </script>
+
+       
   </body>
 </html>

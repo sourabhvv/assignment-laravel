@@ -19,8 +19,8 @@ class uploadpdfController extends Controller
                 'pdf' => 'required|mimes:pdf|max:2048' // Adjust file size as needed
             ]);
 
-            // Save file to storage/app/files directory
-            $path = $request->file('pdf')->store('files');
+          
+            $path = $request->file('pdf')->store();
 
             
             DB::table('files')->insert([
@@ -38,15 +38,21 @@ class uploadpdfController extends Controller
         }
     }
 
-    public function show($filename)
-{
-    $path = storage_path('app/files/' . $filename);
+    public function download($id)
+{   
 
-    if (!Storage::exists($path)) {
-        abort(404);
+    $user = Auth::user();
+    if(!$user){
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
+    
+    $file = DB::table('files')->where('id',$id)->first();
 
-    return response()->file($path);
+    $url = Storage::download($file->file_path);
+
+    return Storage::download($file->file_path);
+    // return response()->json(['url' => $url], 200);
+
 }
 
 
